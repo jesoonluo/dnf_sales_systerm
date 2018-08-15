@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<title>Home</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" href="/static/assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/assets/vendor/linearicons/style.css">
+	<link rel="stylesheet" href="/static/assets/vendor/chartist/css/chartist-custom.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="/static/assets/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" href="/static/assets/css/demo.css">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/static/assets/img/favicon.png">
+</head>
+
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href="index.html"><img src="/static/assets/img/logo-dark.png" alt="疾舞魅影" class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+				<div class="navbar-btn">
+					<button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
+				</div>
+				<div id="navbar-menu">
+					<ul class="nav navbar-nav navbar-right">
+						<li >
+							<a href="#"><img src="/static/assets/img/user.png" class="img-circle" alt="Avatar"> <span>李奇</span> </a>
+						</li>
+						<li >
+							<a href="#"> <i class="lnr lnr-exit"></i><span>退出</span></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+					<ul class="nav">
+						<li><a href="/template/index.html" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
+						<li><a href="/template/icons.html" class=""><i class="lnr lnr-linearicons"></i> <span>看板</span></a></li>
+						<li><a href="elements.html" class=""><i class="lnr lnr-pencil"></i> <span>最新利率设定</span></a></li>
+						<li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>订单有效时间设定</span></a></li>
+						<li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>交易流水信息</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+          <!-- MULTI CHARTS -->
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">最近一周利率表</h3>
+              <div class="right">
+                <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="visits-trends-chart" class="ct-chart"></div>
+            </div>
+          </div>
+          <!-- END MULTI CHARTS -->
+          <!-- VISIT CHART -->
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">最近一月流量统计</h3>
+              <div class="right">
+                <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div id="visits-chart" class="ct-chart"></div>
+            </div>
+          </div>
+          <!-- END VISIT CHART -->
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<footer>
+			<div class="container-fluid">
+				<p class="copyright">Copyright &copy; 2018.疾舞魅影 All rights reserved.More Templates <a href="http://www.jwmy.com/" target="_blank" title="疾舞魅影">疾舞魅影</a></p>
+				
+			</div>
+		</footer>
+	</div>
+	<!-- END WRAPPER -->
+	<!-- Javascript -->
+	<script src="/static/assets/vendor/jquery/jquery.min.js"></script>
+	<script src="/static/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/static/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="/static/assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+	<script src="/static/assets/vendor/chartist/js/chartist.min.js"></script>
+	<script src="/static/assets/scripts/klorofil-common.js"></script>
+	<script>
+	$(function() {
+		// visits trend charts
+		data = {
+			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+			series: [{
+				name: 'series-real',
+				data: [200, 380, 350, 320, 410, 450, 570, 400, 555, 620, 750, 900],
+			}, {
+				name: 'series-projection',
+				data: [240, 350, 360, 380, 400, 450, 480, 523, 555, 600, 700, 800],
+			}]
+		};
+
+		options = {
+			fullWidth: true,
+			lineSmooth: false,
+			height: "270px",
+			low: 0,
+			high: 'auto',
+			series: {
+				'series-projection': {
+					showArea: true,
+					showPoint: false,
+					showLine: false
+				},
+			},
+			axisX: {
+				showGrid: false,
+
+			},
+			axisY: {
+				showGrid: false,
+				onlyInteger: true,
+				offset: 0,
+			},
+			chartPadding: {
+				left: 20,
+				right: 20
+			}
+		};
+
+		new Chartist.Line('#visits-trends-chart', data, options);
+
+
+		// visits chart
+		data = {
+			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+			series: [
+				[6384, 6342, 5437, 2764, 3958, 5068, 7654]
+			]
+		};
+
+		options = {
+			height: 300,
+			axisX: {
+				showGrid: false
+			},
+		};
+
+		new Chartist.Bar('#visits-chart', data, options);
+
+	});
+	</script>
+</body>
+
+</html>

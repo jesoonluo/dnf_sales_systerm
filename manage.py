@@ -1,15 +1,8 @@
-#! /usr/bin/env python3.4
 # -*- coding: utf-8 -*-
-# author: notedit<notedit@gmail.com>
-import json
-import datetime
 
-from db import db, app
-from decimal import Decimal
-from flask import current_app
-from flask_script import Manager, prompt, prompt_pass, prompt_bool, prompt_choices
-from flask_script import Server
-
+from dnf_sys import db, app
+from flask_script import Manager, prompt_bool, Server
+from dnf_sys.model import userModel
 
 manager = Manager(app)
 
@@ -25,11 +18,11 @@ def dropdb():
         db.drop_all()
 
 
-manager.add_command('runserver',Server())
+manager.add_command('runserver',Server(host='0.0.0.0', port=8888))
 
 @manager.shell
 def make_shell_context():
     return dict(app=app,db=db)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     manager.run()
