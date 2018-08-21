@@ -11,6 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = cfg.DB_SERVER
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
+import dnf_sys.sale_price
+
 def _verify_token(tkn):
     try:
         # 验证管理者登录的用户的JWT
