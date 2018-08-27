@@ -1,17 +1,33 @@
 # -*- coding: utf-8 -*-
+import jwt
+import datetime
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask import render_template, redirect, request
+from flask_login import LoginManager, login_required
 from dnf_sys import cfg
-import jwt
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = cfg.DB_SERVER
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_NAME'] = 'Ssession'
+app.config['REMEMBER_COOKIE_DURATION'] = datetime.timedelta(hours=2)
+app.secret_key = cfg.secret_key
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 import dnf_sys.sale_price
+import dnf_sys.login
+from dnf_sys.model.userModel import UserModel
+
+@login_manager.user_loader
+def load_user(user_id):
+    return UserModel.query.get(user_id)
 
 def _verify_token(tkn):
     try:
@@ -42,19 +58,6 @@ def buyer_index():
 @app.route('/goods_list')
 def list_goods():
     return render_template("goods_list.html")
-
-@app.route('/sign', methods=['GET', 'POST'])
-def sign():
-    if request.method == 'POST':
-        phone = request.form.get('phone')
-        pwd = request.form.get('pwd')
-        jwt_data = {'phone': phone, 'pwd': pwd}
-        mc_jwt = cfg.mc_jwt
-        jwt_encode_data = jwt.encode(jwt_data, mc_jwt)
-        redir_url = '/set_config?jwt=%s' % jwt_encode_data
-        return redirect(redir_url)
-    return render_template("sign.html")
-
 
 @app.route('/set_config')
 def setConfig():

@@ -86,6 +86,21 @@ def init_data():
             )
             db.session.add(area_middle)
         db.session.commit()
+    # 用户注册
+    user = userModel.UserModel.register(
+        username='liqi',
+        password='123456',
+        lvl=3
+    )
+    user = userModel.UserModel.register(
+        username='test',
+        password='123456'
+    )
+    if user['errcode'] == 0:
+        print ('初始化用户成功')
+    else:
+        print ('初始化用户失败')
+        print(user['errmsg'])
 
 
 manager.add_command('runserver',Server(host='0.0.0.0', port=8888))

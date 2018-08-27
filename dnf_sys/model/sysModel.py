@@ -32,3 +32,21 @@ class StoreHouseModel(db.Model):
     is_deleted = db.Column(db.Boolean, default=False)
     dt_create = db.Column(db.DateTime, default=datetime.datetime.now)
     dt_update = db.Column(db.DateTime, default=datetime.datetime.now)
+
+
+class SalePriceModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sale_price = db.Column(db.Integer)
+    is_deleted = db.Column(db.Boolean, default=False)
+    valid_time = db.Column(db.DateTime, default=datetime.datetime.now)
+    dt_create = db.Column(db.DateTime, default=datetime.datetime.now)
+    dt_update = db.Column(db.DateTime, default=datetime.datetime.now)
+
+    def to_dict(self):
+        ret_dict = {}
+        for k in self.__table__.columns:
+            value = getattr(self, k.name)
+            if isinstance(value, datetime.datetime):
+                value = value.strftime('%Y-%m-%d')
+            ret_dict[k.name] = value if value else ''
+        return ret_dict
