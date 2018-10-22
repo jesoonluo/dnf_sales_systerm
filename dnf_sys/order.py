@@ -123,6 +123,4 @@ def store_list():
     # 获取当前指导比例
     curr_sale_price = get_recent_price(datetime.datetime.now(), m_larea['id'])
     rst = [i.to_dict() for i in m_store]
-    print('*' * 20)
-    print(rst)
     return render_template('order_list.html', order_list=rst, user=current_user, curr_sale_price=curr_sale_price)

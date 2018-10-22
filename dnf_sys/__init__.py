@@ -109,7 +109,7 @@ def seller_index():
             for i in range(4):
                 line_data[area][i]["data"].append(item['rst'][i])
     return render_template(
-        "/DNF/index.html",
+        "index_phone.html",
         user=current_user,
         line_data=line_data,
         date_range=date_range,
