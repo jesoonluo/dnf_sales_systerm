@@ -1,236 +1,97 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-	<title>Home</title>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<!-- VENDOR CSS -->
-	<link rel="stylesheet" href="/static/assets/vendor/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/static/assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/static/assets/vendor/linearicons/style.css">
-	<link rel="stylesheet" href="/static/assets/vendor/chartist/css/chartist-custom.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="/static/assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="/static/assets/css/demo.css">
-	<!-- GOOGLE FONTS -->
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
-  <!-- bootstrap time picker -->
-  <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">                                                                  
-  <style>
-    a {
-      cursor:pointer;
-    }
-  </style>
-</head>
-
-<body>
-	<!-- WRAPPER -->
-	<div id="wrapper">
-		<!-- NAVBAR -->
-		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="brand">
-				<a href="index.html"><img src="/static/assets/img/logo-dark.png" alt="疾舞魅影" class="img-responsive logo"></a>
-			</div>
-			<div class="container-fluid">
-				<div class="navbar-btn">
-					<button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
-				</div>
-				<div id="navbar-menu">
-					<ul class="nav navbar-nav navbar-right">
-						<li >
-							<a href="#"><img src="/static/assets/img/user.png" class="img-circle" alt="Avatar"> <span>李奇</span> </a>
-						</li>
-						<li >
-							<a href="#"> <i class="lnr lnr-exit"></i><span>退出</span></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
-		<!-- END NAVBAR -->
-		<!-- LEFT SIDEBAR -->
-		<div id="sidebar-nav" class="sidebar">
-			<div class="sidebar-scroll">
-				<nav>
-					<ul class="nav">
-						<li><a href="/template/index.html" class="active"><i class="lnr lnr-home"></i> <span>主页</span></a></li>
-						<li><a href="/template/icons.html" class=""><i class="lnr lnr-linearicons"></i> <span>用户管理</span></a></li>
-						<li><a data-toggle="modal" data-target="#exampleModal"><i class="lnr lnr-pencil" ></i> <span>最新指导比例设定</span></a></li>
-						<li><a href="charts.html" class=""><i class="lnr lnr-bicycle"></i> <span>订单有效时间设定</span></a></li>
-						<li><a href="charts.html" class=""><i class="lnr lnr-chart-bars"></i> <span>交易流水信息</span></a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-		<!-- END LEFT SIDEBAR -->
-		<!-- MAIN -->
-		<div class="main">
-			<!-- MAIN CONTENT -->
-			<div class="main-content">
-          <!-- MULTI CHARTS -->
-          <div class="panel">
+{% extends 'base_home.html' %}
+{% block main %}       
+<div class="main">
+    <div class="main-content">
+        <!-- MULTI CHARTS -->
+        <div class="panel">
             <div class="panel-heading">
-              <h3 class="panel-title">最近一周利率表</h3>
-              <div class="right">
+                <div>
+                    <h5 style="padding-left:5px">大区:</h5>
+                    {% for my_area in area_list%}
+                    <div class="col-sm-1" >
+                        <div class="card shadow">
+                            <div class="card-body" style="cursor:pointer;" onclick = "window.location.href='/index?area={{my_area}}'">
+                                <h5 class="text-center card_title">
+                                    <a href="#"{% if area == my_area %} style="color:red" {% endif %}>{{my_area}}</a>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="right">
                 <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
                 <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div id="visits-trends-chart" class="ct-chart"></div>
-            </div>
-          </div>
-          <!-- END MULTI CHARTS -->
-          <!-- VISIT CHART -->
-          <div class="panel">
-            <div class="panel-heading">
-              <h3 class="panel-title">最近一月流量统计</h3>
-              <div class="right">
-                <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
-                <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
-              </div>
-            </div>
-            <div class="panel-body">
-              <div id="visits-chart" class="ct-chart"></div>
-            </div>
-          </div>
-          <!-- END VISIT CHART -->
-			</div>
-			<!-- END MAIN CONTENT -->
-		</div>
-		<!-- END MAIN -->
-		<div class="clearfix"></div>
-		<footer>
-			<div class="container-fluid">
-				<p class="copyright">Copyright &copy; 2018.疾舞魅影 All rights reserved.More Templates <a href="http://www.jwmy.com/" target="_blank" title="疾舞魅影">疾舞魅影</a></p>
-				
-			</div>
-		</footer>
-	</div>
-
-<!--设置指导比例 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div id="myAlert_new" class="alert alert-warning" style="display:none">
-        <a href="#" class="close" onclick="$('#myAlert_new').hide()">&times;</a>
-            指导比例或时间不能为空！
-    </div>
-    <div class="modal-dialog modal-lg" style="width:500px" role="document">
-        <div class="modal-content">
-          <form action='/saleprice/new?jwt={{tkn}}' method='post'>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label class="col-form-label">设置时间</label>
-                    <input class="form-control" type="text" value="" id="datetimepicker" name="valid_time"></input>
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">指导比例</label>
-                    <input class="form-control" name="sale_price" id="sale_price"></input>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-primary" onclick="return checkNull()">保存</button>
+            <br>
+            <br>
+            <div class="panel-body">
+                <div id="mychart" style="height: 400px; width:800px;" class="ct-chart"></div>
             </div>
-            </form>
         </div>
+        <!--
+        <div class="panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">最近一月流量统计</h3>
+                <div class="right">
+                <button type="button" class="btn-toggle-collapse"><i class="lnr lnr-chevron-up"></i></button>
+                <button type="button" class="btn-remove"><i class="lnr lnr-cross"></i></button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="visits-chart" class="ct-chart"></div>
+            </div>
+        </div>
+        -->
     </div>
 </div>
-	<!-- END WRAPPER -->
-	<!-- Javascript -->
-	<script src="/static/assets/vendor/jquery/jquery.min.js"></script>
-	<script src="/static/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="/static/assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="/static/assets/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
-	<script src="/static/assets/vendor/chartist/js/chartist.min.js"></script>
-	<script src="/static/assets/scripts/klorofil-common.js"></script>
-  <script src="/static/js/bootstrap-datetimepicker.min.js"></script>                                                                                   
-  <script src="/static/js/bootstrap-datetimepicker.js"></script>                                                                                   
+{% endblock %}
+{% block customjs %}
 	<script>
 	$(function() {
-		// visits trend charts
-		data = {
-			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-			series: [{
-				name: 'series-real',
-				data: [200, 380, 350, 320, 410, 450, 570, 400, 555, 620, 750, 900],
-			}, {
-				name: 'series-projection',
-				data: [240, 350, 360, 380, 400, 450, 480, 523, 555, 600, 700, 800],
-			}]
-		};
-
-		options = {
-			fullWidth: true,
-			lineSmooth: false,
-			height: "270px",
-			low: 0,
-			high: 'auto',
-			series: {
-				'series-projection': {
-					showArea: true,
-					showPoint: false,
-					showLine: false
-				},
-			},
-			axisX: {
-				showGrid: false,
-
-			},
-			axisY: {
-				showGrid: false,
-				onlyInteger: true,
-				offset: 0,
-			},
-			chartPadding: {
-				left: 20,
-				right: 20
-			}
-		};
-
-		new Chartist.Line('#visits-trends-chart', data, options);
-
-
-		// visits chart
-		data = {
-			labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-			series: [
-				[6384, 6342, 5437, 2764, 3958, 5068, 7654]
-			]
-		};
-
-		options = {
-			height: 300,
-			axisX: {
-				showGrid: false
-			},
-		};
-
-		new Chartist.Bar('#visits-chart', data, options);
-
-	});
-    function checkNull(){
-        var price = $("#sale_price").val();
-        var mytime = $("#datetimepicker").val();
-        if (price == "" || mytime ==""){
-            $("#myAlert_new").show(100);
-            return false;
+        var my_chart = echarts.init(document.getElementById('mychart'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '最近一周利率表'
+            },
+            legend: {
+                data:['时段一', '时段二', '时段三', '时段四']
+            },
+            color: ['#259c36', '#14c7c4', '##c1c71f', 'red'],
+            xAxis: {
+                type: 'category',
+                name: '日期',
+                nameGap: 20,
+                data: {{date_range|tojson}}
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                },
+                min: 0,
+                max: 200,
+                name: '指导比例(金币/人民币)'
+            },
+            tooltip: {
+                formatter: function (param) {
+                        return '指导比例(金币/人民币)：'+param.data;
+                    }
+            },
+            series: [
+                {% for udata in line_data%}
+                {
+                    name: "{{udata['name']}}",
+                    type: 'line',
+                    data: {{udata['data']}},
+                },
+                {% endfor %}
+            ],
         };
-    };
-    var d = new Date();
-    var month = d.getMonth()+1;
-    var day = d.getDate();
-    var output = d.getFullYear() + '/' +
-    (month<10 ? '0' : '') + month + '/' +
-    (day<10 ? '0' : '') + day;
-    $("#datetimepicker").val(output + " 08:00");
-
-    $('#datetimepicker').datetimepicker({
-          format: 'yyyy-mm-dd hh:ii'
-    });
+        // 使用刚指定的配置项和数据显示图表。
+        my_chart.setOption(option);
+	});
 	</script>
-</body>
-
-</html>
+{% endblock %}

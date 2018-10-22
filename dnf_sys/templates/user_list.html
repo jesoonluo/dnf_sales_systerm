@@ -1,0 +1,81 @@
+{% extends 'base_home.html' %}
+{% block main %}       
+<div class="main">
+			<!-- MAIN CONTENT -->
+    <table class="table table-sm table-bordered table-hover table-light" id="itbl">
+        <thead class="table-primary" style="background-color: #0a5781; color:white;">
+            <tr>
+                <th width="10%">名字</th>
+                <th width="10%">级别</th>
+                <th width="10%">状态</th>
+                <th width="10%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in user_list %}
+            <tr>
+                {% if user['active'] %}
+                <td>{{user['username']}}</td>
+                <td>{{user['lvl']}}</td>
+                <td>正常 </td>
+                <td>
+                    <a class="btn-sm fa fa-lock" data-toggle="modal" data-target="#delcfmModel" 
+                      onclick="Opcfm('{{user['id']}}', 'lock')" title="禁用"></a>
+                </td>
+                {% else %}
+                <td>{{user['username']}}</td>
+                <td>{{user['lvl']}}</td>
+                <td>封禁中</td>
+                <td>
+                    <a class="btn-sm fa fa-unlock" data-toggle="modal" data-target="#delcfmModel" 
+                      onclick="Opcfm('{{user['id']}}', 'unlock')" title="解除禁用"></a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- 信息删除确认 -->  
+<div class="modal fade" id="delcfmModel">  
+    <div class="modal-dialog">  
+        <div class="modal-content message_align">  
+        <div class="modal-header">  
+            <h4 class="modal-title" style="font-size:0.8rem">提示信息</h4>  
+        </div>  
+        <div class="modal-body" id="lock">  
+            <p>您确认要禁用此用户吗？</p>  
+        </div>  
+        <div class="modal-body" id="unlock">  
+            <p>您确认要解除此用户封禁吗？</p>  
+        </div>  
+        <div class="modal-footer">  
+            <input type="hidden" id="del_id"/>  
+            <input type="hidden" id="op"/>  
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>  
+            <button onclick="Opsubmit()" class="btn btn-primary" data-dismiss="modal">确定</button>  
+        </div>  
+        </div>  
+    </div>  
+</div>  
+{% endblock %}
+{% block customjs %}
+<script>
+    function Opcfm(user_id, op) {                                                                                                         
+        $('#del_id').val(user_id);
+        $('#op').val(op);
+        if(op=='lock'){
+          $('#lock').show();
+          $('#unlock').hide();
+        }else if(op=='unlock'){
+          $('#unlock').show();
+          $('#lock').hide();
+        }
+    }
+    function Opsubmit() {                                                                                                         
+        var user_id = document.getElementById("del_id").value;
+        var op = document.getElementById("op").value;
+        window.location.href="/user/Op_user?id="+user_id+"&op="+op;                                                                       
+    }
+</script>
+{% endblock %}

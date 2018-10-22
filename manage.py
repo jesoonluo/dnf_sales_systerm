@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 from dnf_sys import db, app
 from flask_script import Manager, prompt_bool, Server
 from dnf_sys.model import userModel, sysModel
+from dnf_sys.sale_price import str2dt
 
 manager = Manager(app)
 
@@ -86,16 +88,88 @@ def init_data():
             )
             db.session.add(area_middle)
         db.session.commit()
+    # 大区指导比例初始化
+    now = datetime.datetime.now()
+    date_early_one = now - datetime.timedelta(days=1)
+    date_early_two = now - datetime.timedelta(days=2)
+    date_early_three = now - datetime.timedelta(days=3)
+    date_early_four = now - datetime.timedelta(days=4)
+    date_early_five = now - datetime.timedelta(days=5)
+    date_early_six = now - datetime.timedelta(days=6)
+    date_early_seven = now - datetime.timedelta(days=7)
+    ret = {
+        "date_early_seven": date_early_seven,
+        "date_early_six": date_early_six,
+        "date_early_five": date_early_five,
+        "date_early_four": date_early_four,
+        "date_early_three": date_early_three,
+        "date_early_two": date_early_two,
+        "date_early_one": date_early_one,
+    }
+    for item in ret:
+        year = str(ret[item].year)
+        month = str(ret[item].month)
+        day = str(ret[item].day)
+        now_one = str2dt(year + '-' + month + '-' + day + ' ' + '00:10:00')
+        for i in range(1,10):
+            m_sp = sysModel.SalePriceModel(
+                area_id=i,
+                sale_price=40,
+                valid_time=now_one
+            )
+            db.session.add(m_sp)
+        now_two = str2dt(year + '-' + month + '-' + day + ' ' + '06:10:00')
+        for i in range(1,10):
+            m_sp = sysModel.SalePriceModel(
+                area_id=i,
+                sale_price=50,
+                valid_time=now_two
+            )
+            db.session.add(m_sp)
+        now_three = str2dt(year + '-' + month + '-' + day + ' ' + '12:10:00')
+        for i in range(1,10):
+            m_sp = sysModel.SalePriceModel(
+                area_id=i,
+                sale_price=60,
+                valid_time=now_three
+            )
+            db.session.add(m_sp)
+        now_four = str2dt(year + '-' + month + '-' + day + ' ' + '18:10:00')
+        for i in range(1,10):
+            m_sp = sysModel.SalePriceModel(
+                area_id=i,
+                sale_price=70,
+                valid_time=now_four
+            )
+            db.session.add(m_sp)
+    db.session.commit()
+    print('指导比例初始化成功')
     # 用户注册
     user = userModel.UserModel.register(
         username='liqi',
         password='123456',
+        area_id=0,  # 管理员
         lvl=3
     )
     user = userModel.UserModel.register(
         username='test',
-        password='123456'
+        password='123456',
+        area_id=44  # 普通用户
     )
+    # 设置用户等级有效时长(单位:分)
+    user_lvl_to_valid_time = {
+        '1': 100,
+        '2': 200,
+        '3': 600
+    }
+    for user_lvl in range(1,4):
+        lvl_valid = sysModel.LvlValidTimeModel(
+            lvl=user_lvl,
+            valid_time=int(user_lvl_to_valid_time[str(user_lvl)])
+        )
+        db.session.add(lvl_valid)
+    db.session.commit()
+    print('用户等级有效时长设置成功,一级100分钟,二级200分钟,三级600分钟')
     if user['errcode'] == 0:
         print ('初始化用户成功')
     else:
